@@ -85,5 +85,37 @@ create table user_to_role(user_to_role_id bigint primary key auto_increment ,
 							references users(user_id),
 							foreign key user_to_role_role_id_fk(role_id) 
 							references roles(role_id));
+							
+create table user_login_feed(user_login_feed_id int unsigned not null primary key auto_increment,
+							 user_id int unsigned not null,
+							 ip_address varchar(50) not null,
+							 loggedin_ts timestamp not null default current_timestamp,
+							 loggedout_ts timestamp not null default 0 on update current_timestamp,
+							 foreign key user_id_fk(user_id)
+						  	 references users(user_id)
+						  	 on delete cascade);
+						  	 
+create table user_login_attempt_count(user_login_attempt_count_id int unsigned not null primary key auto_increment,
+								 user_id int unsigned not null,
+								 attempt_count int unsigned not null default 1,
+								 last_attempt_ts timestamp not null default current_timestamp,
+								 foreign key user_id_fk(user_id)
+						  	 	 references users(user_id)
+						  	 	 on delete cascade);
+						  	 	 
+create table user_codes(user_codes_id int unsigned not null primary key auto_increment,
+								user_id int unsigned not null,
+								password_reset_code varchar(500) null,
+								signup_verification_code varchar(500) not null,
+								password_reset_code_used boolean not null default false,
+								signup_verification_code_used boolean not null default false,
+								initial_created_ts timestamp not null default current_timestamp,
+								password_reset_code_created_ts timestamp not null default 0,
+								signup_verification_code_created_ts timestamp not null default 0,
+								password_reset_code_updated_ts timestamp not null default 0,
+								signup_verification_code_updated_ts timestamp not null default 0,
+								foreign key user_id_fk(user_id)
+						  	 	references users(user_id)
+						  	 	on delete cascade);
 
 
