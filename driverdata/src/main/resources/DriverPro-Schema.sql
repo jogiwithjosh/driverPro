@@ -1,16 +1,14 @@
-
-
-create table roles(role_id bigint primary key,
+create table roles(role_id bigint unsigned primary key,
 					role_name varchar(255) not null,
 					created_ts timestamp not null default current_timestamp);
 					
-insert into roles(1, 'ROLE_DRIVER');
-insert into roles(2, 'ROLE_CUSTOMER');
-insert into roles(3, 'ROLE_DRIVER_AGENCY');
-insert into roles(4, 'ROLE_ADMIN');
-insert into roles(5, 'ROLE_MANAGER');
+insert into roles(role_id,role_name) values(1, 'ROLE_DRIVER');
+insert into roles(role_id,role_name) values(2, 'ROLE_CUSTOMER');
+insert into roles(role_id,role_name) values(3, 'ROLE_DRIVER_AGENCY');
+insert into roles(role_id,role_name) values(4, 'ROLE_ADMIN');
+insert into roles(role_id,role_name) values(5, 'ROLE_MANAGER');
 
-create table users(user_id bigint primary key not null auto_increment,
+create table users(user_id bigint unsigned primary key not null auto_increment,
 				  email varchar(255) unique not null,
 				  username varchar(255) unique not null,
 				  password varchar(255) not null,
@@ -23,8 +21,8 @@ create table users(user_id bigint primary key not null auto_increment,
 				  updated_ts timestamp not null default 0
 				  );
 				  
-create table user_profile(user_profile_id bigint primary key not null auto_increment,
-							user_id bigint not null,
+create table user_profile(user_profile_id bigint unsigned primary key not null auto_increment,
+							user_id bigint unsigned not null,
 							first_name varchar(255) not null,
 							last_name varchar(255) not null,
 							alternate_phone_number varchar(12) not null,
@@ -33,9 +31,9 @@ create table user_profile(user_profile_id bigint primary key not null auto_incre
 							references users(user_id)
 							);
 							
-create table driver_identity_profile(driver_identity_profile_id bigint not null 
+create table driver_identity_profile(driver_identity_profile_id bigint unsigned not null 
 										primary key auto_increment,
-									user_id bigint not null,
+									user_id bigint unsigned not null,
 									pan_card_number varchar(20) not null,
 									driving_licence_number varchar(50) not null,
 									adhaar_card_number varchar(50) not null,
@@ -54,9 +52,9 @@ create table driver_identity_profile(driver_identity_profile_id bigint not null
 									references users(user_id)
 									);
 									
-create table driver_agency_identity_profile(driver_agency_identity_profile_id bigint not null
+create table driver_agency_identity_profile(driver_agency_identity_profile_id bigint unsigned not null
 											primary key auto_increment,
-											user_id bigint not null,
+											user_id bigint unsigned not null,
 											agency_name varchar(500) not null,
 											agency_address varchar(500) not null,
 											agency_registartion_number varchar(100) not null,
@@ -64,10 +62,20 @@ create table driver_agency_identity_profile(driver_agency_identity_profile_id bi
 											is_agency_verified boolean not null default false,
 											agency_verified_ts timestamp not null default 0,
 											agency_verified_by varchar(255) null,
+											foreign key driver_agency_identity_profile_user_id_fk(user_id)
+											references users(user_id)
 											);
+											
+create table driver_to_driver_agency(driver_to_driver_agency_id bigint unsigned not null primary key auto_increment,
+									user_id bigint unsigned not null,
+									driver_agency_identity_profile_id bigint unsigned not null,
+									foreign key driver_to_driver_agency_user_id_fk(user_id)
+									references users(user_id),
+									foreign key driver_to_driver_agency_driver_agency_identity_profile_id_fk(driver_agency_identity_profile_id)
+									references driver_agency_identity_profile(driver_agency_identity_profile_id));
 
-create table address(address_id bigint not null primary key auto_increment,
-						user_id bigint not null,
+create table address(address_id bigint unsigned not null primary key auto_increment,
+						user_id bigint unsigned not null,
 						address_line1 varchar(255) not null,
 						address_line2 varchar(255) not null,
 						address_line3 varchar(255) not null,
@@ -78,33 +86,33 @@ create table address(address_id bigint not null primary key auto_increment,
 						foreign key users_address_user_id_fk(user_id) 
 						references users(user_id));
 
-create table user_to_role(user_to_role_id bigint primary key auto_increment ,
-							user_id bigint not null,
-							role_id bigint not null,
+create table user_to_role(user_to_role_id bigint unsigned primary key auto_increment ,
+							user_id bigint unsigned not null,
+							role_id bigint unsigned not null,
 							foreign key user_to_role_user_id_fk(user_id) 
 							references users(user_id),
 							foreign key user_to_role_role_id_fk(role_id) 
 							references roles(role_id));
 							
-create table user_login_feed(user_login_feed_id int unsigned not null primary key auto_increment,
-							 user_id int unsigned not null,
+create table user_login_feed(user_login_feed_id bigint unsigned not null primary key auto_increment,
+							 user_id bigint unsigned not null,
 							 ip_address varchar(50) not null,
 							 loggedin_ts timestamp not null default current_timestamp,
 							 loggedout_ts timestamp not null default 0 on update current_timestamp,
-							 foreign key user_id_fk(user_id)
+							 foreign key user_login_feed_user_id_fk(user_id)
 						  	 references users(user_id)
 						  	 on delete cascade);
 						  	 
-create table user_login_attempt_count(user_login_attempt_count_id int unsigned not null primary key auto_increment,
-								 user_id int unsigned not null,
+create table user_login_attempt_count(user_login_attempt_count_id bigint unsigned not null primary key auto_increment,
+								 user_id bigint unsigned not null,
 								 attempt_count int unsigned not null default 1,
 								 last_attempt_ts timestamp not null default current_timestamp,
-								 foreign key user_id_fk(user_id)
+								 foreign key user_login_attempt_count_user_id_fk(user_id)
 						  	 	 references users(user_id)
 						  	 	 on delete cascade);
 						  	 	 
-create table user_codes(user_codes_id int unsigned not null primary key auto_increment,
-								user_id int unsigned not null,
+create table user_codes(user_codes_id bigint unsigned not null primary key auto_increment,
+								user_id bigint unsigned not null,
 								password_reset_code varchar(500) null,
 								signup_verification_code varchar(500) not null,
 								password_reset_code_used boolean not null default false,
@@ -114,7 +122,7 @@ create table user_codes(user_codes_id int unsigned not null primary key auto_inc
 								signup_verification_code_created_ts timestamp not null default 0,
 								password_reset_code_updated_ts timestamp not null default 0,
 								signup_verification_code_updated_ts timestamp not null default 0,
-								foreign key user_id_fk(user_id)
+								foreign key user_codes_user_id_fk(user_id)
 						  	 	references users(user_id)
 						  	 	on delete cascade);
 
