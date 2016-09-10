@@ -21,6 +21,8 @@ create table users(user_id bigint unsigned primary key not null auto_increment,
 				  updated_ts timestamp not null default 0
 				  );
 				  
+alter table users add column is_account_locked boolean not null default false;
+				  
 create table user_profile(user_profile_id bigint unsigned primary key not null auto_increment,
 							user_id bigint unsigned not null,
 							first_name varchar(255) not null,
