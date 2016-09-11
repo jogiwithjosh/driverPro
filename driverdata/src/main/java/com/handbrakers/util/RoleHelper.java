@@ -11,11 +11,11 @@ public enum RoleHelper {
 	
 	//enum_name(dbRoleId, uiRole, dbRole);
 	
-	ADMIN(1,"SITE_ADMIN","ROLE_ADMIN"),
-	MANAGER(2,"SITE_MANAGER","ROLE_MANAGER"),
-	CUSTOMER(3,"CUSTOMER","ROLE_CUSTOMER"),
-	DRIVER_AGENCY(4,"DRIVER_AGENCY","ROLE_DRIVER_AGENCY"),
-	DRIVER(5,"DRIVER","DRIVER");
+	DRIVER(1,"DRIVER","ROLE_DRIVER"),
+	CUSTOMER(2,"CUSTOMER","ROLE_CUSTOMER"),
+	DRIVER_AGENCY(3,"DRIVER_AGENCY","ROLE_DRIVER_AGENCY"),
+	SITE_ADMIN(4,"SITE_ADMIN","ROLE_ADMIN"),
+	SITE_MANAGER(5,"SITE_MANAGER","ROLE_MANAGER");
 	
 	private final int roleId;
 	private final String uiRole;
@@ -56,14 +56,14 @@ public enum RoleHelper {
 	}
 	
 	public static boolean isSiteAdmin(String uiRole){
-		if(ADMIN.uiRole.equalsIgnoreCase(uiRole)){
+		if(SITE_ADMIN.uiRole.equalsIgnoreCase(uiRole)){
 			return true;
 		}
 		return false;
 	}
 	
 	public static boolean isSiteManager(String uiRole){
-		if(MANAGER.uiRole.equalsIgnoreCase(uiRole)){
+		if(SITE_MANAGER.uiRole.equalsIgnoreCase(uiRole)){
 			return true;
 		}
 		return false;

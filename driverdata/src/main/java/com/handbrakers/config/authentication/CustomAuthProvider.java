@@ -93,8 +93,10 @@ public class CustomAuthProvider implements AuthenticationProvider{
 				System.out.println("Login attemts reset failed at " + new Date() + " for Username : "+ user.getUsername());
 			}
 			
+			SecurityUser securityUser = new SecurityUser(user.getUsername(), user.getPassword(), true, true, true, true, getAuthorities(user.getUserToRoles()));
+			
 			UsernamePasswordAuthenticationToken authenticationToken = 
-					new UsernamePasswordAuthenticationToken(user.getUsername() + "///" + user.getUserId(), 
+					new UsernamePasswordAuthenticationToken(securityUser, 
 					user.getPassword(), getAuthorities(user.getUserToRoles()));
 			
 			return authenticationToken;

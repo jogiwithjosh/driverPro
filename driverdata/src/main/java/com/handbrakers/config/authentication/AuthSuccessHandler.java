@@ -58,7 +58,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 				if(e instanceof ProcessingException){
 					request.getRequestDispatcher("/authFailure?logout=true&message="+e.getMessage()).forward(request, response);
 				}
-				request.getRequestDispatcher("/logout?logout=true&message="+"It seems like your session has Expired, Please login again").forward(request, response);
+				request.getRequestDispatcher("/signout?signout=true&message="+"It seems like your session has Expired, Please login again").forward(request, response);
 			}	
 			
 	}

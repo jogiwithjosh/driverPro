@@ -23,11 +23,6 @@ import com.handbrakers.service.UserService;
  */
 @Controller
 @RequestMapping("/user")
-/*@PreAuthorize(value = "hasAnyRole('PREVILEGE_SITE_ADMIN',"
-		+ "'PREVILEGE_SITE_MANAGER',"
-		+ "'PREVILEGE_CUSTOMER',"
-		+ "'PREVILEGE_DAIRY_OWNER',"
-		+ "'PREVILEGE_DAIRY_MANAGER')")*/
 public class UserController {
 	
 	@Autowired

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component("securityParams")
 public interface SecurityParams {
 	
-	public long getMyId() throws Exception;
+	/*public long getMyId() throws Exception;*/
 	
 	public String getMyUsername() throws Exception;
 	

@@ -3,9 +3,6 @@
  */
 package com.handbrakers.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.handbrakers.entity.UserLoginFeed;
 import com.handbrakers.entity.UserProfile;
 import com.handbrakers.entity.Users;
@@ -17,8 +14,7 @@ import com.handbrakers.exception.ProcessingException;
  *
  */
 
-@Service
-@Transactional
+
 public interface UserService {
 	
 	public boolean registerNewUser(Users user, String role) throws ProcessingException;

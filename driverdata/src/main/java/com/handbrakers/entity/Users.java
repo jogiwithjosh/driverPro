@@ -58,6 +58,7 @@ public class Users implements java.io.Serializable {
 	private UserCodes userCodes;
 	private UserLoginFeed userLoginFeed;
 	private Set<UserToRole> userToRoles = new HashSet<UserToRole>(0);
+	//private Set<Roles> roleses = new HashSet<Roles>(0);
 	
 	
 	private Set<DriverAgencyIdentityProfile> driverAgencyIdentityProfiles = new HashSet<DriverAgencyIdentityProfile>(
@@ -269,7 +270,7 @@ public class Users implements java.io.Serializable {
 	
 	@Cascade(CascadeType.ALL)
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "users")
 	public Set<UserToRole> getUserToRoles() {
 		return this.userToRoles;
 	}
@@ -277,9 +278,22 @@ public class Users implements java.io.Serializable {
 	public void setUserToRoles(Set<UserToRole> userToRoles) {
 		this.userToRoles = userToRoles;
 	}
+	
+	/*@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_to_role", 
+	joinColumns = { @JoinColumn(name = "user_id", nullable = false, updatable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "role_id", nullable = false, updatable = false) })
+	public Set<Roles> getRoleses() {
+		return roleses;
+	}
 
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	public void setRoleses(Set<Roles> roleses) {
+		this.roleses = roleses;
+	}
+*/
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "users")
 	public Set<DriverToDriverAgency> getDriverToDriverAgencies() {
 		return this.driverToDriverAgencies;
 	}
@@ -289,7 +303,7 @@ public class Users implements java.io.Serializable {
 		this.driverToDriverAgencies = driverToDriverAgencies;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "users")
 	public Set<DriverIdentityProfile> getDriverIdentityProfiles() {
 		return this.driverIdentityProfiles;
 	}

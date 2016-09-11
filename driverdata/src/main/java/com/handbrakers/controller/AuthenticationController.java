@@ -63,7 +63,7 @@ public class AuthenticationController {
 		logger.info("User with Userid " + securityParams.getMyUsername() + " authentication Success at " + new Date().toString());
 		logger.log(Level.INFO, "User with Userid " + securityParams.getMyUsername() + " authentication Success at " + new Date().toString());
 		try{
-			return new ResponseEntity<Object>(securityParams.getMyUsername() + "///" + securityParams.getMyRoles().toString(), HttpStatus.OK);
+			return new ResponseEntity<Object>(securityParams.getMyUsername() + "///" + securityParams.getMyRoles()[0], HttpStatus.OK);
 		} catch(Exception e){
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

@@ -13,27 +13,16 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  */
 public class SecurityParamsImpl implements SecurityParams{
 	
-	public long getMyId() throws Exception{
-		try{
-			return Long.parseLong(SecurityContextHolder.
-					getContext().
-					getAuthentication().
-					getPrincipal().
-					toString().
-				split("///")[1]);
-		} catch(Exception e){
-			throw new Exception("You haven't Logged-in. Please login and Try again. ");
-		}
+	private SecurityUser getSecurityUser(){
+		return (SecurityUser) SecurityContextHolder.
+				getContext().
+				getAuthentication().
+				getPrincipal();
 	}
 	
 	public String getMyUsername() throws Exception{
 		try{
-			return SecurityContextHolder.
-					getContext().
-					getAuthentication().
-					getPrincipal().
-					toString().
-					split("///")[0];
+			return getSecurityUser().getUsername();
 		} catch(Exception e){
 			throw new Exception("You haven't Logged-in. Please login and Try again. ");
 		}		

@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService{
 		try{
 			
 			//get userby userId
-			Users user = userRepository.getUserById(securityParams.getMyId());			
+			Users user = userRepository.getUserByUsername(securityParams.getMyUsername());			
 			
 			//check whether if already loginfeed exists
 			if(user.getUserLoginFeed() != null){
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService{
 	public boolean updateUserLogoutTs()
 			throws ProcessingException {
 		try{
-			Users user = userRepository.getUserById(securityParams.getMyId());
+			Users user = userRepository.getUserByUsername(securityParams.getMyUsername());
 			if(user.getUserLoginFeed() != null){
 				user.getUserLoginFeed().setLoggedoutTs(new Date());
 				return userRepository.saveOrUpdateUserLoginData(user.getUserLoginFeed());
@@ -354,11 +354,12 @@ public class UserServiceImpl implements UserService{
 			throw e;
 		}
 	}
-
+	
+	
 	@Override
 	public UserProfile getUserProfile() throws ProcessingException, AuthenticationLostException {
 		try{
-			return userRepository.getUserById(securityParams.getMyId()).getUserProfile();
+			return userRepository.getUserByUsername(securityParams.getMyUsername()).getUserProfile();
 		} catch(Exception e){
 			if(e instanceof ProcessingException){
 				throw new ProcessingException(e.getMessage());
@@ -371,7 +372,7 @@ public class UserServiceImpl implements UserService{
 	public boolean updateUserProfile(UserProfile userProfile)
 			throws ProcessingException, AuthenticationLostException {
 		try{
-			Users user = userRepository.getUserById(securityParams.getMyId());
+			Users user = userRepository.getUserByUsername(securityParams.getMyUsername());
 			user.setUserProfile(userProfile);
 			return userRepository.updateUser(user);
 		} catch(Exception e){

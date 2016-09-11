@@ -3,6 +3,7 @@
  */
 package com.handbrakers.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.handbrakers.entity.Users;
 import com.handbrakers.exception.ProcessingException;
 import com.handbrakers.service.UserService;
+import com.handbrakers.util.RoleHelper;
 
 /**
  * @author Jogireddy
@@ -31,9 +33,25 @@ public class BaseController {
 	@Autowired
 	private UserService userService;
 	
+	
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String homePage(){
 		return "index";
+	}
+	
+	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	public ResponseEntity<Object> register(){
+		Users user = new Users("jogiwithjosh@gmail.com","jogiwithjosh","Test1234","8500859510",true,true,new Date(),new Date(),new Date(),new Date());
+		try {
+			if(userService.registerNewUser(user, RoleHelper.SITE_ADMIN.toString())){
+				return StaticResponseEntity.RESPONSE_ENTITY("Registration Success", HttpStatus.OK);
+			}
+			return StaticResponseEntity.RESPONSE_ENTITY("Registration Failure", HttpStatus.NOT_FOUND);
+			
+		} catch (ProcessingException e) {
+			return StaticResponseEntity.RESPONSE_ENTITY(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		
 	}
 	
 	

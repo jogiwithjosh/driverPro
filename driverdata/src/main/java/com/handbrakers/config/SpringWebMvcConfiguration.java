@@ -9,19 +9,18 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import com.handbrakers.config.authentication.SecurityParams;
 import com.handbrakers.config.authentication.SecurityParamsImpl;
@@ -33,15 +32,16 @@ import com.handbrakers.config.authentication.SecurityParamsImpl;
 
 @Configuration
 @ComponentScan({"com.handbrakers"})
-@Import({SpringMailConfiguration.class,
-		 SpringHibernateConfiguration.class,
-		 SpringTilesConfiguration.class})
 @EnableWebMvc
+/*@Import({SpringMailConfiguration.class,
+		 SpringHibernateConfiguration.class,
+		 SpringTilesConfiguration.class,
+		 SpringSecurityConfiguration.class})
 @EnableTransactionManagement
 @EnableSpringConfigured//this don't have any use now. 
 						//Thought of using @configurable to autowire beans
 						//(as of now, have so many doubts on this feature).
-public class SpringWebMvcConfiguration extends WebMvcConfigurerAdapter{
+*/public class SpringWebMvcConfiguration extends WebMvcConfigurerAdapter{
 	
 	private static final Logger logger = Logger.getLogger(SpringWebMvcConfiguration.class); 
 	
@@ -81,7 +81,7 @@ public class SpringWebMvcConfiguration extends WebMvcConfigurerAdapter{
 	  configurer.enable();
 	 }
 	
-	@Bean
+	/*@Bean
 	public InternalResourceViewResolver viewResolver()
 	{
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -89,6 +89,19 @@ public class SpringWebMvcConfiguration extends WebMvcConfigurerAdapter{
 		viewResolver.setSuffix(".jsp");
 		//viewResolver.setOrder(1);
 		return viewResolver;
+	}*/
+	
+	/**
+     * Configure ViewResolvers to deliver preferred views.
+     */
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/");
+		viewResolver.setSuffix(".jsp");
+		registry.viewResolver(viewResolver);
 	}
 	
 }
